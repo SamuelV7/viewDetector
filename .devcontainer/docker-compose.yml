@@ -7,4 +7,24 @@ services:
       dockerfile: dockerfile
     volumes:
       - ..:/workspace:/cached
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1  # Number of GPUs
+              capabilities: [gpu]
     command: sleep infinity
+    profiles:
+      - python  
+  python2:
+    build: 
+      context: .
+      dockerfile: dockerfile
+    volumes:
+      - ..:/workspace:/cached
+    command: sleep infinity
+    profiles:
+      - python2
+      
+
