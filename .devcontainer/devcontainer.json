@@ -1,0 +1,23 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/ubuntu
+
+{
+    "dockerComposeFile": "./docker-compose.yml",
+    "service": "python",
+    "workspaceFolder": "/workspace",
+    "shutdownAction": "none",
+    
+    "customizations": {
+        "vscode": {
+            "extensions": [
+                "rust-lang.rust-analyzer",
+                "golang.go",
+                "ms-python.python",
+                "ms-toolsai.jupyter",
+                "ms-python.debugpy",
+                "tamasfe.even-better-toml",
+                "vadimcn.vscode-lldb"
+            ]
+        }
+    }
+}
