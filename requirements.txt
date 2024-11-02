@@ -2,3 +2,6 @@ matplotlib
 transformers
 sentence_transformers
 ollama
+requests 
+beautifulsoup4
+readability-lxml
