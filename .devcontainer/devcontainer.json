@@ -16,7 +16,15 @@
                 "tamasfe.even-better-toml",
                 "vadimcn.vscode-lldb",
                 "ms-azuretools.vscode-docker"
-            ]
+            ],
+            "settings": {
+                "terminal.integrated.profiles.linux": {
+                    "fish": {
+                        "path": "fish"
+                    }
+                },
+                "terminal.integrated.defaultProfile.linux": "fish"
+            }
         }
     },
     "runServices": ["python"]

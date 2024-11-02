@@ -3,10 +3,11 @@ version: '3.8'
 services:
   python:
     build: 
-      context: .
-      dockerfile: dockerfile
+      context: ..          # Set the build context to the parent directory
+      dockerfile: .devcontainer/dockerfile
     volumes:
       - ..:/workspace:/cached
+      - ollama_data:/root/.ollama
     deploy:
       resources:
         reservations:
@@ -15,16 +16,19 @@ services:
               count: 1  # Number of GPUs
               capabilities: [gpu]
     command: sleep infinity
+    ports:
+      - "11434:11434"
     profiles:
-      - python  
-  python2:
-    build: 
-      context: .
-      dockerfile: dockerfile
-    volumes:
-      - ..:/workspace:/cached
-    command: sleep infinity
-    profiles:
-      - python2
-      
+      - python
 
+volumes:
+  ollama_data:
+  # python2:
+  #   build: 
+  #     context: .
+  #     dockerfile: dockerfile
+  #   volumes:
+  #     - ..:/workspace:/cached
+  #   command: sleep infinity
+  #   profiles:
+  #     - python2

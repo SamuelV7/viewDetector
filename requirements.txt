@@ -1,0 +1,4 @@
+matplotlib
+transformers
+sentence_transformers
+ollama
