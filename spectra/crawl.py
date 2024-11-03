@@ -15,16 +15,16 @@ def fetch_html(url):
     headers = {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
     }
-    try:
-        response = requests.get(url, headers=headers)
-        if response.status_code == 200:
-            return response.text
-        else:
-            print(f"Failed to retrieve content from {url}. Status code: {response.status_code}")
-            return None
-    except requests.RequestException as e:
-        print(f"An error occurred: {e}")
+    # try:
+    response = requests.get(url, headers=headers)
+    if response.status_code == 200:
+        return response.text
+    else:
+        print(f"Failed to retrieve content from {url}. Status code: {response.status_code}")
         return None
+    # except requests.RequestException as e:
+    # print(f"An error occurred: {e}")
+    # return None
 
 def get_beautiful_soup_object(html):
     return BeautifulSoup(html, 'html.parser')
@@ -71,14 +71,14 @@ def is_article_based_on_length(soup) -> bool:
     # Assuming an article has at least 1000 characters of text
     return text_length > 1000
 
-def save_pages(name:str, pages, output_file):
-    dict_pages = {name: [], "non_article": []}
+def save_pages(name:str, pages, output_file:str, time):
+    dict_pages = {"name": name, "time":time, "article": [], "non_article": []}
     for i, page in enumerate(pages):
         if page.article:
-            dict_pages[name].append({"content": page.content, "links": page.links})
+            dict_pages["article"].append({"content": page.content, "links": page.links})
         else:
             dict_pages["non_article"].append({"content": page.content, "links": page.links})
-    with open(output_file, 'w') as file:
+    with open(f"./data/{output_file}", 'w') as file:
         json.dump(dict_pages, file, indent=4)
 
 def check_if_url_is_valid(url: str) -> bool:
@@ -98,7 +98,10 @@ def crawl(url, save_name):
         if not check_if_url_is_valid(current_url):
             continue
         visited_links[current_url] = True
-        soup = get_beautiful_soup_object(fetch_html(current_url))
+        html_back = fetch_html(current_url)
+        if html_back is None:
+            continue
+        soup = get_beautiful_soup_object(html_back)
         is_article = is_article_based_on_length(soup)
         if is_article:
             articles_total += 1
@@ -107,10 +110,18 @@ def crawl(url, save_name):
         # add the page to the list of pages to visit if it is not already visited
         to_visit += [link for link in textLink.links if link not in visited_links]
         # depth += 1
-    save_pages(save_name, articles, f"{save_name}@{datetime.now()}.json")
+    curr_time = datetime.now()
+    name_version = f"{save_name}"
+    json_version = f"{curr_time}@{name_version}.json"
+    save_pages(name_version, articles, json_version, str(curr_time))
 
 if __name__ == "__main__":
     # url = "https://edition.cnn.com" #Replace with your target URL
-    url = "https://www.foxnews.com"
-    crawl(url, "foxnews")
+    # read urls from file
+    with open("/workspace/spectra/crawl.json", "r") as file:
+        urls = json.load(file)
+
+    for url in urls:
+        print(f"Starting to crawl {url.strip()}")
+        crawl(url, url.split("//")[1])
             

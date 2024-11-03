@@ -2,6 +2,9 @@
 CNN.json
 foxnews.json
 pages.json
+*.png
+spectra/crawl.json
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

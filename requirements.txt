@@ -5,3 +5,7 @@ ollama
 requests 
 beautifulsoup4
 readability-lxml
+sklearn
+matplotlib
+mplcursors
+sentence-transformers
